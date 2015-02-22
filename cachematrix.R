@@ -34,8 +34,20 @@ makeCacheMatrix <- function(local_matrix = matrix()) {
     get_solved = get_solved)
 }
 
-## Write a short comment describing this function
-
-cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+## Consumer of makeCacheMatrix
+cacheSolve <- function(cache_matrix, ...) {
+  # Get "solved" matrix
+  # If solution isn't cached it will be null
+  solution <- cache_matrix$get_solved()
+  if(!is.null(solution)) {
+    # If solution is cached it will be returned
+    message("Getting cached matrix")
+    return(solution)
+  } else {
+    # Solve it...
+    solution <- solve(cache_matrix$get_matrix(), ...)
+    # Put in cache just before return
+    cache_matrix$set_solved(solution)
+    return(solution)
+  }
 }
